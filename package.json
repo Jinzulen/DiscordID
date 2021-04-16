@@ -1,0 +1,31 @@
+{
+  "name": "discord-id",
+  "version": "1.0.0",
+  "description": "Grab a Discord user's profile.",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "id",
+    "user",
+    "discord",
+    "profile"
+  ],
+  "author": {
+    "name": "Jinzulen",
+    "email": "me@khalilg.com",
+    "url": "https://khalilg.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jinzulen/DiscordID.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jinzulen/DiscordID/issues"
+  },
+  "homepage": "https://github.com/Jinzulen/DiscordID",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
