@@ -31,7 +31,7 @@ export default class DiscordAPI
      * 
      * Discord API Endpoint.
      */
-    private Gateway: string = "https://discord.com/api/users";
+    private readonly Gateway: string = "https://discord.com/api/users";
 
     constructor(botKey: string)
     {
@@ -52,6 +52,14 @@ export default class DiscordAPI
                     {
                         reject(JSON);
                     }
+
+                    /**
+                     * Grab account creation timestamp.
+                     * 
+                     * USER ID (SNOWFLAKE) / 2 ^ 22 + DISCORD EPOCH
+                     * SNOWFLAKES REFERENCE: https://discord.com/developers/docs/reference#snowflakes
+                     */
+                    JSON["creation_stamp"] = JSON.id / 4194304 + 1420070400000;
 
                     resolve(JSON);
                 });

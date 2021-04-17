@@ -1,8 +1,8 @@
 <img align="right" width="100" height="100" src="https://discord.com/assets/41484d92c876f76b20c7f746221e8151.svg">
 
 # DiscordID
+#### Convenient solution for fetching a Discord user profile.
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/Jinzulen/DiscordID?style=for-the-badge)](https://codeclimate.com/github/Jinzulen/DiscordID/maintainability) [![CodeFactor](https://www.codefactor.io/repository/github/jinzulen/discordid/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/jinzulen/discordid) ![NPM Weekly Downloads](https://img.shields.io/npm/dm/discord-id.svg?style=for-the-badge)
-#### A very simple tool for fetching a Discord user profile.
 
 ### Errors
 These are the possible errors you could run into.
@@ -33,9 +33,13 @@ Client.grabProfile("236123737525583872").then(User =>
      * username: 'Jin',
      * avatar: 'c0b547d5a6c43dc60bbdb3b2a5cfd872',
      * discriminator: '8303',
-     * public_flags: 768 }
+     * public_flags: 768,
+     * creation_stamp: 1476366685993 }
      *
-     * HOW TO USE THE AVATAR HASH: https://cdn.discordapp.com/avatars/ID/AVATAR.png?size=1024
+     * HOW TO USE THE AVATAR HASH: https://cdn.discordapp.com/avatars/ID/HASH.EXTENSION?size=16-4096
+     * E.G: https://cdn.discordapp.com/avatars/236123737525583872/c0b547d5a6c43dc60bbdb3b2a5cfd872.png?size=1024
+     * 
+     * HOW TO USE CREATION STAMP: IT'S A UNIX TIMESTAMP, HANDLE IT HOWEVER YOU WANT.
      */
 }).catch(Error => {
     /**
