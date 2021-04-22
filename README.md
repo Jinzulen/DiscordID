@@ -31,13 +31,13 @@ Client.grabProfile("236123737525583872").then(User =>
      * 
      * { id: '236123737525583872',
      * username: 'Jin',
-     * avatar: 'c0b547d5a6c43dc60bbdb3b2a5cfd872',
+     * avatar:
+     *  { hash: 'c0b547d5a6c43dc60bbdb3b2a5cfd872',
+     *    format: 'png',
+     *    url: 'https://cdn.discordapp.com/avatars/236123737525583872/c0b547d5a6c43dc60bbdb3b2a5cfd872.png?size=1024' },
      * discriminator: '8303',
      * public_flags: 768,
      * creation_stamp: 1476366685993 }
-     *
-     * HOW TO USE THE AVATAR HASH: https://cdn.discordapp.com/avatars/ID/HASH.EXTENSION?size=16-4096
-     * E.G: https://cdn.discordapp.com/avatars/236123737525583872/c0b547d5a6c43dc60bbdb3b2a5cfd872.png?size=1024
      * 
      * HOW TO USE CREATION STAMP: IT'S A UNIX TIMESTAMP, HANDLE IT HOWEVER YOU WANT.
      */

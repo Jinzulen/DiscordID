@@ -4,7 +4,7 @@
  * @copyright Copyright 2021 Khalil G. <https://github.com/Jinzulen>
  */
 
-import * as Fetch from "node-fetch";
+import fetch  from "node-fetch";
 
 interface Profile
 {
@@ -44,14 +44,27 @@ export default class DiscordAPI
         {
             return new Promise((resolve, reject) =>
             {
-                Fetch(`${this.Gateway}/${userId}`, {
+                fetch(`${this.Gateway}/${userId}`, {
                     method: "GET",
                     headers: this.Headers
                 }).then(Data => Data.json()).then(JSON => {
                     if (JSON.code)
                     {
                         reject(JSON);
+                        return;
                     }
+
+                    /**
+                     * Add to the raw
+                     * avatar data.
+                     */
+                    let Format = JSON.avatar.startsWith("a_") ? "gif" : "png";
+
+                    JSON["avatar"] = {
+                        "hash"   : JSON.avatar,
+                        "format" : Format,
+                        "url"    : `https://cdn.discordapp.com/avatars/${JSON.id}/${JSON.avatar}.${Format}?size=1024`
+                    };
 
                     /**
                      * Grab account creation timestamp.
