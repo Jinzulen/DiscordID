@@ -12,13 +12,16 @@ These are the possible errors you could run into.
 1 | 0 | 401: Unauthorized | You didn't enter a valid bot token.
 2 | 10013 | Unknown User | The user ID you submitted doesn't match anyone.
 
-### Usage Example
+### Usage Examples
+##### Load and ready the library.
 ```js
 const { Discord } = require("discord-id");
 
 // A bot token is required for authorization.
 const Client = new Discord("BOT_TOKEN");
-
+```
+##### Grab profile information.
+```js
 // Despite the Discord user ID being an integer, when you
 // input it here, make sure it's a string otherwise you risk
 // receiving an error.
@@ -27,8 +30,6 @@ Client.grabProfile("236123737525583872").then(User =>
     console.log(User);
 
     /**
-     * OUTPUT
-     * 
      * { id: '236123737525583872',
      * username: 'Jin',
      * avatar:
@@ -37,15 +38,37 @@ Client.grabProfile("236123737525583872").then(User =>
      *    url: 'https://cdn.discordapp.com/avatars/236123737525583872/c0b547d5a6c43dc60bbdb3b2a5cfd872.png?size=1024' },
      * discriminator: '8303',
      * public_flags: 768,
-     * creation_stamp: 1476366685993 }
-     * 
-     * HOW TO USE CREATION STAMP: IT'S A UNIX TIMESTAMP, HANDLE IT HOWEVER YOU WANT.
+     * creation_stamp: 1476366685993,
+     * badges:
+     *  [ { id: 256, name: 'House Balance' },
+     *    { id: 512, name: 'Early Supporter' } ] }
      */
 }).catch(Error => {
     /**
      * ERROR HANDLING LOGIC HERE
      */
 });
+```
+
+##### How to use the badges data.
+> This is only a rudimentary example for demonstration purposes. Feel free to use your own implementation.
+
+```js
+Client.grabProfile("236123737525583872").then(User =>
+{
+    let Badges = [];
+
+    for (var i = 0; i < User.badges.length; i++)
+    {
+        Badges.push(User.badges[i].name);
+    }
+
+    console.log(`These are the user's badges: ${Badges.join(", ")}`);
+
+    /**
+     * These are the user's badges: House Balance, Early Supporter
+     */
+}).catch(console.error);
 ```
 
 ### License

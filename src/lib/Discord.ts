@@ -5,6 +5,7 @@
  */
 
 import fetch  from "node-fetch";
+import { Flags } from "./Flags";
 
 interface Profile
 {
@@ -18,8 +19,15 @@ interface Profile
 export default class DiscordAPI
 {
     /**
+     * @param Flags
+     *
+     * Flags instance.
+     */
+    private Flags;
+
+    /**
      * @param Headers object
-     * 
+     *
      * Request Headers.
      */
     private Headers: {} = {
@@ -28,16 +36,34 @@ export default class DiscordAPI
 
     /**
      * @param Gateway string
-     * 
+     *
      * Discord API Endpoint.
      */
     private readonly Gateway: string = "https://discord.com/api/users";
 
     constructor(botKey: string)
     {
+        /**
+         * Instantiate Flags.
+         */
+        this.Flags = new Flags;
+
+        /**
+         * Add the bot token to
+         * the authorization header.
+         *
+         * AUTHENTICATION REFERENCE: https://discord.com/developers/docs/reference#authentication
+         */
         this.Headers["Authorization"] = `Bot ${botKey}`;
     }
 
+    /**
+     * Grab the user's profile.
+     * 
+     * @param userId string
+     * 
+     * @returns Promise
+     */
     grabProfile(userId: string): Promise<Profile>
     {
         try
@@ -50,35 +76,54 @@ export default class DiscordAPI
                 }).then(Data => Data.json()).then(JSON => {
                     if (JSON.code)
                     {
-                        reject(JSON);
-                        return;
+                        return reject(JSON);
                     }
 
-                    /**
-                     * Add to the raw
-                     * avatar data.
-                     */
-                    let Format = JSON.avatar.startsWith("a_") ? "gif" : "png";
+                    JSON["creation_stamp"] = this.grabUnix(JSON.id);
+                    JSON["avatar"] = this.grabAvatar(JSON.id, JSON.avatar);
+                    JSON["badges"] = this.Flags.deconstructFlags(JSON.public_flags);
 
-                    JSON["avatar"] = {
-                        "hash"   : JSON.avatar,
-                        "format" : Format,
-                        "url"    : `https://cdn.discordapp.com/avatars/${JSON.id}/${JSON.avatar}.${Format}?size=1024`
-                    };
-
-                    /**
-                     * Grab account creation timestamp.
-                     * 
-                     * USER ID (SNOWFLAKE) / 2 ^ 22 + DISCORD EPOCH
-                     * SNOWFLAKES REFERENCE: https://discord.com/developers/docs/reference#snowflakes
-                     */
-                    JSON["creation_stamp"] = JSON.id / 4194304 + 1420070400000;
-
-                    resolve(JSON);
+                    return resolve(JSON);
                 });
             });
         } catch (Exception) {
             throw (Exception as Error).message;
         }
+    }
+
+    /**
+     * Grab account
+     * creation timestamp.
+     * 
+     * USER ID (SNOWFLAKE) / 2 ^ 22 + DISCORD EPOCH
+     * SNOWFLAKES REFERENCE: https://discord.com/developers/docs/reference#snowflakes
+     *
+     * @param userId 
+     *
+     * @returns number
+     */
+    grabUnix(userId: string): number
+    {
+        return Number(userId) / 4194304 + 1420070400000;
+    }
+    
+    /**
+     * Add to the raw
+     * avatar data.
+     *
+     * @param userID string
+     * @param avatarHash string
+     *
+     * @returns object
+     */
+    grabAvatar(userId: string, avatarHash: string): object
+    {
+        let Format = avatarHash.startsWith("a_") ? "gif" : "png";
+
+        return {
+            "hash"   : avatarHash,
+            "format" : Format,
+            "url"    : `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.${Format}?size=1024`
+        };
     }
 };
